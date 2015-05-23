@@ -1,0 +1,17 @@
+{
+  "nome":"Stan Marsh",
+  "sexo":"Masculino",
+  "idade":10,
+  "cabelo":"Preto",
+  "olhos":"Preto",
+  "pessoasRelacionadas":{
+    "mae":"Randy Marsh",
+    "pai":"Sharon Marsh",
+    "amigos":["Kenny McCormick","Kyle Broflovski","Stan Marsh","Wendy Testaburger"],
+    "inimigos":["Shelly Marsh" , "Token Black"]
+  },
+  "origem":"South Park, Colorado",
+  "atividade":"Estudante",
+  "voz":"Trey Parker",
+  "caracteristicas":["inteligente", "líder", "equilibrado"]
+}

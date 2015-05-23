@@ -1,0 +1,17 @@
+{
+  "nome":"Token Black",
+  "sexo":"Masculino",
+  "idade":10,
+  "cabelo":"Preto",
+  "olhos":"Preto",
+  "pessoasRelacionadas":{
+    "mae":"Steve Black",
+    "pai":"Linda Black",
+    "amigos":["Wendy Testaburger", "Clyde Donovan" , "Craig Tucker"],
+    "inimigos":["Stan Marsh"]
+  },
+  "origem":"South Park, Colorado",
+  "atividade":"Estudante",
+  "voz":"Trey Parker",
+  "caracteristicas":["baixista", "rico"]
+}

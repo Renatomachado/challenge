@@ -1,0 +1,17 @@
+{
+  "nome":"Kyle Broflovski",
+  "sexo":"Masculino",
+  "idade":10,
+  "cabelo":"Ruivo",
+  "olhos":"Preto",
+  "pessoasRelacionadas":{
+    "mae":"Gerald Broflovski",
+    "pai":"Sheila Broflovski",
+    "amigos":["Kenny McCormick","Eric Theodore Cartman","Stan Marsh", "Ike Broflovski"],
+    "inimigos":["Eric Thedore Cartman"]
+  },
+  "origem":"South Park, Colorado",
+  "atividade":"Estudante",
+  "voz":"Matt Stone",
+  "caracteristicas":["inteligente", "judeu", "equilibrado"]
+}

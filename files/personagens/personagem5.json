@@ -1,0 +1,17 @@
+{
+  "nome":"Randy Marsh",
+  "sexo":"Masculino",
+  "idade":45,
+  "cabelo":"Preto",
+  "olhos":"Pretos",
+  "pessoasRelacionadas":{
+    "mae":"Desconhecido",
+    "pai":"Marvin Marsh",
+    "amigos":["Sharon Marsh","Stan Marsh","Shelly Marsh"],
+    "inimigos":["Todos"]
+  },
+  "origem":"South Park, Colorado",
+  "atividade":"Geólogo",
+  "voz":"Trey Parker",
+  "caracteristicas":["briguento"]
+}

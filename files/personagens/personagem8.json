@@ -1,0 +1,17 @@
+{
+  "nome":"Wendy Testaburger",
+  "sexo":"Feminino",
+  "idade":10,
+  "cabelo":"Preto",
+  "olhos":"Pretos",
+  "pessoasRelacionadas":{
+    "mae":"Sra Testaburger",
+    "pai":"Sr Testaburger",
+    "amigos":["Token Black","Stan Marsh"],
+    "inimigos":["Eric Theodore Cartman"]
+  },
+  "origem":"South Park, Colorado",
+  "atividade":"Estudante",
+  "voz":"April Stewart",
+  "caracteristicas":["inteligente", "politizada"]
+}

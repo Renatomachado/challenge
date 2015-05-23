@@ -1,0 +1,17 @@
+{
+  "nome":"Leopold 'Butters' Stotch",
+  "sexo":"Masculino",
+  "idade":10,
+  "cabelo":"Loiro",
+  "olhos":"Preto",
+  "pessoasRelacionadas":{
+    "mae":"Linda Stotch",
+    "pai":"Stephen Stotch",
+    "amigos":["Eric Theodore Cartman","Kyle Broflovski","Stan Marsh"],
+    "inimigos":[]
+  },
+  "origem":"South Park, Colorado",
+  "atividade":"Estudante",
+  "voz":"Matt Stone",
+  "caracteristicas":["doce", "inocente", "submisso"]
+}

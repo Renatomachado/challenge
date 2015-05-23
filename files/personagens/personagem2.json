@@ -1,0 +1,17 @@
+{
+  "nome":"Kenny McCormick",
+  "sexo":"Masculino",
+  "idade":10,
+  "cabelo":"Loiro",
+  "olhos":"Azuis",
+  "pessoasRelacionadas":{
+    "mae":"Carol McCormick",
+    "pai":"Stuart McCormick",
+    "amigos":["Eric Theodore Cartman","Kyle Broflovski","Stan Marsh"],
+    "inimigos":[]
+  },
+  "origem":"South Park, Colorado",
+  "atividade":"Estudante",
+  "voz":"Matt Stone",
+  "caracteristicas":["imortal", "fala incompreensível", "pobre"]
+}
