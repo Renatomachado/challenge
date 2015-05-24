@@ -1,0 +1,71 @@
+[
+	{
+	  "nome":"Eric Theodore Cartman",
+	  "sexo":"Masculino",
+	  "idade":10,
+	  "cabelo":"Castanho",
+	  "olhos":"Pretos",
+	  "pessoasRelacionadas":{
+	    "mae":"Liane Cartman",
+	    "pai":null,
+	    "amigos":["Kenny McCormick","Kyle Broflovski","Stan Marsh"],
+	    "inimigos":["Kyle Broflovski"]
+	  },
+	  "origem":"South Park, Colorado",
+	  "atividade":"Estudante",
+	  "voz":"Trey Parker",
+	  "caracteristicas":["egoísta", "racista", "nazista", "fingido", "manipulador", "psicopata", "sociopata"]
+	},
+	{
+	  "nome":"Eric Theodore Cartman",
+	  "sexo":"Masculino",
+	  "idade":10,
+	  "cabelo":"Castanho",
+	  "olhos":"Pretos",
+	  "pessoasRelacionadas":{
+	    "mae":"Liane Cartman",
+	    "pai":null,
+	    "amigos":["Kenny McCormick","Kyle Broflovski","Stan Marsh"],
+	    "inimigos":["Kyle Broflovski"]
+	  },
+	  "origem":"South Park, Colorado",
+	  "atividade":"Estudante",
+	  "voz":"Trey Parker",
+	  "caracteristicas":["egoísta", "racista", "nazista", "fingido", "manipulador", "psicopata", "sociopata"]
+	},
+	{
+	  "nome":"Eric Theodore Cartman",
+	  "sexo":"Masculino",
+	  "idade":10,
+	  "cabelo":"Castanho",
+	  "olhos":"Pretos",
+	  "pessoasRelacionadas":{
+	    "mae":"Liane Cartman",
+	    "pai":null,
+	    "amigos":["Kenny McCormick","Kyle Broflovski","Stan Marsh"],
+	    "inimigos":["Kyle Broflovski"]
+	  },
+	  "origem":"South Park, Colorado",
+	  "atividade":"Estudante",
+	  "voz":"Trey Parker",
+	  "caracteristicas":["egoísta", "racista", "nazista", "fingido", "manipulador", "psicopata", "sociopata"]
+	},
+	{
+	  "nome":"Eric Theodore Cartman",
+	  "sexo":"Masculino",
+	  "idade":10,
+	  "cabelo":"Castanho",
+	  "olhos":"Pretos",
+	  "pessoasRelacionadas":{
+	    "mae":"Liane Cartman",
+	    "pai":null,
+	    "amigos":["Kenny McCormick","Kyle Broflovski","Stan Marsh"],
+	    "inimigos":["Kyle Broflovski"]
+	  },
+	  "origem":"South Park, Colorado",
+	  "atividade":"Estudante",
+	  "voz":"Trey Parker",
+	  "caracteristicas":["egoísta", "racista", "nazista", "fingido", "manipulador", "psicopata", "sociopata"]
+	},
+
+]

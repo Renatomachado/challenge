@@ -21,6 +21,8 @@
     "mysql": "~2.6.2",
     "mysql-wrap": "~0.4.0",
     "xml-stream": "~0.4.5",
-    "express-xml-bodyparser": "0.0.7"
+    "express-xml-bodyparser": "0.0.7",
+    "underscore": "~1.8.3",
+    "async": "~1.0.0"
   }
 }
