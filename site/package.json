@@ -1,0 +1,17 @@
+{
+  "name": "site",
+  "version": "0.0.0",
+  "description": "Desafio R&B - Site",
+  "main": "/views/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Angularjs",
+    "R&B",
+    "Desafio",
+    "South-Park"
+  ],
+  "author": "Renato Machado",
+  "license": "BSD-2-Clause"
+}
