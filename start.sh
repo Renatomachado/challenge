@@ -22,12 +22,12 @@ then
     db_user="root"
 fi
 
-echo -n "Senha para " $db_user "(root)"
+echo -n "Senha para" $db_user
 read -s db_pass 
 echo 
 if [ -z "$db_pass" ]; 
 then 
-    db_pass="root"
+    db_pass=""
 fi
 
 echo -n "Nome Database: (challenge)" 
@@ -66,26 +66,51 @@ cd site
 bower install
 cd ../
 
-#executando a api em novo terminal
-echo "Iniciando API"
-cd server
-gnome-terminal -x env APP_PORT=$api_port DB_HOST=$db_host DB_USER=$db_user DB_PASSWORD=$db_pass DB_NANE=$db_name node api
-cd ../
-sleep 1
 
-#executando o file watcher
-echo "Iniciando watcher de arquivos"
-cd watcher
-gnome-terminal -x env API_PORT=$api_port node file_watcher
-cd ../
-sleep 1
 
-#Abrindo browser para o site
-echo Abrindo browser para o site
-xdg-mime default browser.desktop text/html
-cd site
-cd views
-xdg-open index.html
-cd ../../
+enviroment="$(uname -s)"
 
-EOF
+if [ "$enviroment" == "Linux" ];
+then
+    echo "Linux"
+    #executando a api em novo terminal
+    echo "Iniciando API"
+    cd server
+    gnome-terminal -x env APP_PORT=$api_port DB_HOST=$db_host DB_USER=$db_user DB_PASSWORD=$db_pass DB_NANE=$db_name node api
+    cd ../
+    sleep 1
+
+    #executando o file watcher
+    echo "Iniciando watcher de arquivos"
+    cd watcher
+    gnome-terminal -x env API_PORT=$api_port node file_watcher
+    cd ../
+    sleep 1
+
+    #Abrindo browser para o site
+    echo Abrindo browser para o site
+    xdg-mime default browser.desktop text/html
+    cd site
+    cd views
+    xdg-open index.html
+    cd ../../
+elif [ "$enviroment" == "Darwin" ];
+then
+    echo "MAC-Darwin"
+    pwd="$(pwd)"
+    
+    #executando a api em novo terminal
+    echo "Iniciando API"
+    osascript -e "tell application \"Terminal\" to do script \"cd $pwd; cd server; env APP_PORT=$api_port DB_HOST=$db_host DB_USER=$db_user DB_PASSWORD=$db_pass DB_NANE=$db_name node api\"" > /dev/null
+    sleep 1
+    
+    #executando watcher em novo terminal
+    echo "Iniciando watcher de arquivos"
+    osascript -e "tell application \"Terminal\" to do script \"cd $pwd; cd watcher; env API_PORT=$api_port node file_watcher\"" > /dev/null
+    sleep 1
+    
+    #Abrindo browser com site
+    echo "Abrindo site"
+    #open site/views/index.html
+    open http://localhost:$api_port/api/personagens
+fi

@@ -46,6 +46,8 @@ CREATE TABLE `personagens` (
   `origem` varchar(200) DEFAULT NULL,
   `atividade` varchar(50) DEFAULT NULL,
   `voz` varchar(50) DEFAULT NULL,
+  `mae` varchar(200) DEFAULT NULL,
+  `pai` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`nome`),
   UNIQUE KEY `new_tablecol_UNIQUE` (`nome`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -80,7 +82,9 @@ CREATE TABLE `relacionamentos` (
   `relacionado` varchar(200) NOT NULL,
   `tipo` varchar(50) NOT NULL,
   KEY `fk_personagem_idx` (`personagem`),
-  CONSTRAINT `fk_personagem` FOREIGN KEY (`personagem`) REFERENCES `personagens` (`nome`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `fk_relacionado_idx` (`relacionado`),
+  CONSTRAINT `fk_personagem` FOREIGN KEY (`personagem`) REFERENCES `personagens` (`nome`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_relacionado` FOREIGN KEY (`relacionado`) REFERENCES `personagens` (`nome`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -93,4 +97,4 @@ CREATE TABLE `relacionamentos` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-05-25 13:26:37
+-- Dump completed on 2015-05-24 10:41:33
