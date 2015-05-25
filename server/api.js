@@ -57,7 +57,7 @@ router.get('/personagens', function(req, res) {
         
         async.forEach(rows, function(row, forEach_callback){
             
-            //para mais facil implementação no banco de dados
+            //para mais fácil implementação no banco de dados
             //o campo de pessoas relacionadas foi omitido
             //esse parte é para manter o objeto no mesmo formato dos arquivos
             row.pessoasRelacionadas = {};
@@ -126,7 +126,7 @@ router.get('/personagens/:nome', function(req, res) {
         nome: req.params.nome
     }).then(function(row){
         
-        //para mais facil implementação no banco de dados
+        //para mais fácil implementação no banco de dados
         //o campo de pessoas relacionadas foi omitido
         //esse parte é para manter o objeto no mesmo formato dos arquivos
         row.pessoasRelacionadas = {};

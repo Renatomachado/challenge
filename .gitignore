@@ -1,5 +1,2 @@
-files/perso
-watcher/node_modules
-server/node_modules
-site/node_modules
+node_modules
 site/lib

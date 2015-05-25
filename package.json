@@ -1,17 +1,16 @@
 {
-  "name": "server",
+  "name": "chgallenge",
   "version": "0.0.0",
-  "description": "API - Desafio R&B",
-  "main": "api.js",
+  "description": "Desafio R&B",
+  "main": "start.sh",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "API",
-    "Express",
     "South-park",
     "R&B",
-    "Desafio"
+    "Desafio",
+    "Javascript"
   ],
   "author": "Renato Machado",
   "license": "BSD-2-Clause",
@@ -23,6 +22,10 @@
     "xml-stream": "~0.4.5",
     "express-xml-bodyparser": "0.0.7",
     "underscore": "~1.8.3",
-    "async": "~1.0.0"
+    "async": "~1.0.0",
+    "fs": "0.0.2",
+    "js2xmlparser": "~0.1.9",
+    "chokidar": "~1.0.1",
+    "underscore": "~1.8.3"
   }
 }

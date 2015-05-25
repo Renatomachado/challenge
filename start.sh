@@ -43,25 +43,26 @@ echo -n "Deseja executar script de criação do banco de dados? (Y/N)"
 read answer
 if [ "$answer" == "Y" ];
 then
-    mysql -u$db_user -p$db_pass -e "\. challenge.sql"
+    mysql -u$db_user -p$db_pass -e "\. database/challenge.sql"
 fi
 
-#instalar modulos api
+#instalar modulos node
 echo "Instalando modulos para a API"
-cd server
 npm install
-cd ../
 
-#instalar modulos watcher
-echo "Instalando modulos para o Watcher"
-cd watcher
-npm install
-cd ../
-
-#instalar modulos do site
+#instalar libs do site
+echo checando se BOWER está isntalado
+if ! bower_command="$(type -p "bower")" || [ -z "$bower_command" ];
+then
+  echo BOWER não está instalado
+  echo instalando bower globalmente
+  # install bower here
+  sudo npm install bower -g
+else
+  echo BOWER já está instalado
+fi
 echo "Instalando libs do site"
 cd site
-npm install bower
 bower install
 cd ../
 
