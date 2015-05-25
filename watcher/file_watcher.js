@@ -1,7 +1,6 @@
 var fs = require('fs');
 var js2xmlparser = require("js2xmlparser");
 var http = require('http');
-var chokidar = require('chokidar');
 var _und = require('underscore');
 var path = require('path');
 var async = require('async');
@@ -77,13 +76,15 @@ function read_single_file(file){
     }); 
 }
 
+var port = process.env.API_PORT || 3000;
+
 //função de envido do xml de personagens para api
 function post(xml){
     
     var postRequest = {
         host: "localhost",
         path: "/api/personagens",
-        port: 3000,
+        port: port,
         method: "POST",
         headers: {
             'Cookie': "cookie",

@@ -1,11 +1,19 @@
 var express    = require('express');
-var app        = express();
 var bodyParser = require('body-parser');
+var app        = express();
 var mysql      = require('mysql');
 var createMySQLWrap = require('mysql-wrap');
 var xmlparser       = require('express-xml-bodyparser');
 var _und            = require('underscore');
 var async           = require('async');
+
+var port = process.env.APP_PORT || 3000;
+
+
+var host = process.env.DB_HOST || 'localhost';
+var user = process.env.DB_USER || 'root';
+var password = process.env.DB_PASSWORD || 'root';
+var database = process.env.DB_NAME || 'challenge';
 
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -18,8 +26,6 @@ var sql = createMySQLWrap(connection);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-var port = process.env.PORT || 3000;
 
 //rotas
 var router = express.Router();
@@ -51,6 +57,15 @@ router.get('/personagens', function(req, res) {
         
         async.forEach(rows, function(row, forEach_callback){
             
+            //para mais facil implementação no banco de dados
+            //o campo de pessoas relacionadas foi omitido
+            //esse parte é para manter o objeto no mesmo formato dos arquivos
+            row.pessoasRelacionadas = {};
+            row.pessoasRelacionadas.mae = row.mae;
+            row.pessoasRelacionadas.pai = row.pai;
+            delete row.mae;
+            delete row.pai;
+            
             async.parallel([
                 function(callback){ //caracteristicas
                     sql.select({
@@ -73,7 +88,7 @@ router.get('/personagens', function(req, res) {
                         fields : ['relacionado']
                     }, {personagem : row.nome, tipo : 'amigos'})
                     .then(function(amigos){
-                        row.amigos = _und.pluck(amigos, 'relacionado');
+                        row.pessoasRelacionadas.amigos = _und.pluck(amigos, 'relacionado');
                         callback();
                     })
                 }, 
@@ -83,7 +98,7 @@ router.get('/personagens', function(req, res) {
                         fields : ['relacionado']
                     }, {personagem : row.nome, tipo : 'inimigos'})
                     .then(function(inimigos){
-                        row.inimigos = _und.pluck(inimigos, 'relacionado');
+                        row.pessoasRelacionadas.inimigos = _und.pluck(inimigos, 'relacionado');
                         callback();
                     });
                 }
@@ -111,7 +126,16 @@ router.get('/personagens/:nome', function(req, res) {
         nome: req.params.nome
     }).then(function(row){
         
-         async.parallel([
+        //para mais facil implementação no banco de dados
+        //o campo de pessoas relacionadas foi omitido
+        //esse parte é para manter o objeto no mesmo formato dos arquivos
+        row.pessoasRelacionadas = {};
+        row.pessoasRelacionadas.mae = row.mae;
+        row.pessoasRelacionadas.pai = row.pai;
+        delete row.mae;
+        delete row.pai;
+        
+        async.parallel([
             function(callback){ //caracteristicas
                 sql.select({
                     table : 'personagens_caracteristicas',
@@ -133,7 +157,7 @@ router.get('/personagens/:nome', function(req, res) {
                     fields : ['relacionado']
                 }, {personagem : row.nome, tipo : 'amigos'})
                 .then(function(amigos){
-                    row.amigos = _und.pluck(amigos, 'relacionado');
+                    row.pessoasRelacionadas.amigos = _und.pluck(amigos, 'relacionado');
                     callback();
                 })
             }, 
@@ -143,7 +167,7 @@ router.get('/personagens/:nome', function(req, res) {
                     fields : ['relacionado']
                 }, {personagem : row.nome, tipo : 'inimigos'})
                 .then(function(inimigos){
-                    row.inimigos = _und.pluck(inimigos, 'relacionado');
+                    row.pessoasRelacionadas.inimigos = _und.pluck(inimigos, 'relacionado');
                     callback();
                 });
             }
@@ -181,7 +205,7 @@ router.post('/personagens', function(req, res) {
     
     function retorno (rows){
         
-        if(personagem.caracteristicas.length > 0){
+        if(personagem.caracteristicas.length > 0){ //caracteristicas
             personagem.caracteristicas.forEach(function(caracteristica){
                 
                 sql.selectOne('caracteristicas', {  
@@ -207,7 +231,7 @@ router.post('/personagens', function(req, res) {
             });
         }
         
-        if(personagem.pessoasrelacionadas[0].amigos.length){
+        if(personagem.pessoasrelacionadas[0].amigos.length){ //amigos
             personagem.pessoasrelacionadas[0].amigos.forEach(function(relacionado){
                 insert_into('relacionamentos', {
                     personagem : personagem.nome[0],
@@ -217,7 +241,7 @@ router.post('/personagens', function(req, res) {
             });            
         }
         
-        if(personagem.pessoasrelacionadas[0].inimigos.length){
+        if(personagem.pessoasrelacionadas[0].inimigos.length){ //inimigos
             personagem.pessoasrelacionadas[0].inimigos.forEach(function(relacionado){
                 insert_into('relacionamentos', {
                     personagem : personagem.nome[0],
