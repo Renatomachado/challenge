@@ -5,7 +5,7 @@ var _und = require('underscore');
 var path = require('path');
 var async = require('async');
 
-var dir = '../files/personagens/'; //diretório de arquivos
+var dir = process.env.FILE_DIR || '../files/personagens/'; //diretório de arquivos
 var objects = []; //array armazenando objetos dos arquivos lidos
 
 

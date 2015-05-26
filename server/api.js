@@ -1,5 +1,6 @@
 var express    = require('express');
 var bodyParser = require('body-parser');
+var cors       = require('cors');
 var app        = express();
 var mysql      = require('mysql');
 var createMySQLWrap = require('mysql-wrap');
@@ -30,7 +31,7 @@ app.use(bodyParser.json());
 //rotas
 var router = express.Router();
 router.use(xmlparser());
-
+router.use(cors());
 //list personagens
 router.get('/personagens', function(req, res) {
     
@@ -129,96 +130,14 @@ router.get('/personagens', function(req, res) {
  
 });
 
-//show personagens
-router.get('/personagens/:nome', function(req, res) {
-
-    sql.selectOne({
-        table : 'personagens',
-        fields : ['*'],
-    },{ 
-        nome: req.params.nome
-    }).then(function(row){
-        
-        //para mais fácil implementação no banco de dados
-        //o campo de pessoas relacionadas foi omitido
-        //esse parte é para manter o objeto no mesmo formato dos arquivos
-        row.pessoasRelacionadas = {};
-        
-        async.parallel([
-            function(callback){ //caracteristicas
-                sql.select({
-                    table : 'personagens_caracteristicas',
-                    fields : ['caracteristica']
-                }, { personagem : row.nome })
-                .then(function(caracteristicas){
-
-                    row.caracteristicas = _und.pluck(caracteristicas, 'caracteristica');
-                    callback();  
-
-                }).catch(function(err){
-                    res.json(err);
-
-                }); 
-            },
-            function(callback){ //amigos
-                sql.select({
-                    table : 'relacionamentos',
-                    fields : ['relacionado']
-                }, {personagem : row.nome, tipo : 'amigos'})
-                .then(function(amigos){
-                    row.pessoasRelacionadas.amigos = _und.pluck(amigos, 'relacionado');
-                    callback();
-                })
-            }, 
-            function(callback){ //inimigos
-                sql.select({
-                    table : 'relacionamentos',
-                    fields : ['relacionado']
-                }, {personagem : row.nome, tipo : 'inimigos'})
-                .then(function(inimigos){
-                    row.pessoasRelacionadas.inimigos = _und.pluck(inimigos, 'relacionado');
-                    callback();
-                });
-            }, 
-            function(callback){ //mae
-                sql.select({
-                    table : 'relacionamentos',
-                    fields : ['relacionado']
-                }, {personagem : row.nome, tipo : 'mae'})
-                .then(function(mae){
-                    row.pessoasRelacionadas.mae = _und.pluck(mae, 'relacionado')[0];
-                    callback();
-                });
-            }, 
-            function(callback){ //pai
-                sql.select({
-                    table : 'relacionamentos',
-                    fields : ['relacionado']
-                }, {personagem : row.nome, tipo : 'pai'})
-                .then(function(pai){
-                    row.pessoasRelacionadas.pai = _und.pluck(pai, 'relacionado')[0];
-                    callback();
-                });
-            }
-        ], function(e){
-            if (e) res.json(e);
-
-            res.json(row);
-        });
-        
-    }).catch(function(err){
-        res.json(err);
-    });
-});
-
 //criar personagens
 //insere caracteristicas caso não exista
 //adiciona relacionamentos de amigos e inimigos
 router.post('/personagens', function(req, res) {
  
     var personagem = req.body.personagem;
-    
-    insert_into('personagens', {
+      
+    sql.insert('personagens', {
         nome : personagem.nome[0],
         sexo : personagem.sexo[0],
         idade : personagem.idade[0],
@@ -226,15 +145,10 @@ router.post('/personagens', function(req, res) {
         olhos : personagem.olhos[0],
         origem : personagem.origem[0],
         atividade : personagem.atividade[0],
-        voz : personagem.voz[0], 
-//        mae : personagem.pessoasrelacionadas[0].mae[0], 
-//        pai : personagem.pessoasrelacionadas[0].pai[0],
+        voz : personagem.voz[0]        
+    }).then(function(rows){
         
-    }, retorno, catch_error);
-    
-    function retorno (rows){
-        
-        async.series([
+        async.parallel([
             function(callback){
                 if(personagem.caracteristicas.length > 0){ //caracteristicas
                     personagem.caracteristicas.forEach(function(caracteristica){
@@ -242,83 +156,110 @@ router.post('/personagens', function(req, res) {
                         sql.selectOne('caracteristicas', {  
                             nome : caracteristica
                         }).then(function(caract){
-
-                            if(caract){
-                                insert_into('personagens_caracteristicas', {
-                                    personagem : personagem.nome[0],
-                                    caracteristica : caract.nome
-                                }, function(){
-                                    callback();
-                                }, catch_error);
-                            }else{
-                                insert_into('caracteristicas', {
+                            if(caract == undefined){
+                            
+                                sql.insert('caracteristicas', {
                                     nome : caracteristica
-                                }, function(){
-                                    insert_into('personagens_caracteristicas', {
+                                }).then(function(){
+                                    sql.insert('personagens_caracteristicas', {
                                         personagem : personagem.nome[0],
                                         caracteristica : caracteristica
-                                    }, function(){
+                                    }).then(function(){
                                         callback();
-                                    }, catch_error); 
-                                }, catch_error); 
+                                    }).catch(function(){
+                                       //catch error
+                                        callback();
+                                    });
+                                }).catch(function(){
+                                   //catch error
+                                    callback();
+                                });
+                                  
+                               
+                            }else{
+                                sql.insert('personagens_caracteristicas', {
+                                    personagem : personagem.nome[0],
+                                    caracteristica : caracteristica
+                                }).then(function(){
+                                    callback();
+                                }).catch(function(){
+                                   //catch error
+                                    callback();
+                                });
                             }
                         });  
                     });
                 }
             },
             function(callback){
-                if(personagem.pessoasrelacionadas[0].amigos.length){ //amigos
+                if(personagem.pessoasrelacionadas[0].amigos != undefined){ //amigos
                     personagem.pessoasrelacionadas[0].amigos.forEach(function(relacionado){
-                        insert_into('relacionamentos', {
+                        sql.insert('relacionamentos', {
                             personagem : personagem.nome[0],
                             relacionado : relacionado,
                             tipo : 'amigos'
-                        }, function(){
+                        }).then(function(){
                             callback();
-                        }, catch_error);
+                        }).catch(function(){
+                           //catch error
+                            callback();
+                        });
                     });            
                 }
             },
             function(callback){
-                if(personagem.pessoasrelacionadas[0].inimigos.length){ //inimigos
+                if(personagem.pessoasrelacionadas[0].inimigos != undefined){ //inimigos
                     personagem.pessoasrelacionadas[0].inimigos.forEach(function(relacionado){
-                        insert_into('relacionamentos', {
+                        sql.insert('relacionamentos', {
                             personagem : personagem.nome[0],
                             relacionado : relacionado,
                             tipo : 'inimigos'
-                        }, function(){
+                        }).then(function(){
                             callback();
-                        }, catch_error);
+                        }).catch(function(){
+                           //catch error
+                            callback();
+                        });
                     });     
                 }
             },
             function(callback){
-                insert_into('relacionamentos', {
+                sql.insert('relacionamentos', {
                     personagem : personagem.nome[0],
                     relacionado : personagem.pessoasrelacionadas[0].mae[0],
                     tipo : 'mae'
-                }, function(){
+                }).then(function(){
                     callback();
-                }, catch_error);
+                }).catch(function(){
+                   //catch error
+                    callback();
+                });
             },
             function(callback){
-                insert_into('relacionamentos', {
+                sql.insert('relacionamentos', {
                     personagem : personagem.nome[0],
                     relacionado : personagem.pessoasrelacionadas[0].pai[0],
                     tipo : 'pai'
-                }, function(){
+                }).then(function(){
                     callback();
-                }, catch_error);
+                }).catch(function(){
+                   //catch error
+                    callback();
+                });
             }
         ], function(){
             
             res.json({sucess : 'personagem inserido com sucesso'}); 
         });
-    }
-    
-    function catch_error (err){
-        res.status(400).json({error: err, personagem : personagem});
-    }
+    }).catch(function(err){
+        if(err){
+            res.status(400).json({error : err}); 
+        }else{
+            res.json({sucess : 'personagem inserido com sucesso'}); 
+        }
+        
+    });
+
 });
 
 //prefixo
@@ -327,11 +268,3 @@ app.use('/api', router);
 //inicia server
 app.listen(port);
 console.log('Serviço aberto na porta: ' + port);
-        
-        
-//helper functions      
-function insert_into (table, object, callback, error){
-    sql.insert(table, object)
-       .then(callback)
-       .catch(error);  
-};

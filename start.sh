@@ -37,6 +37,12 @@ then
     db_name="challenge"
 fi
 
+echo -n "Diretório dos arquivos .json: ($(pwd)/files/personagens)" 
+read file_dir 
+if [ -z "$file_dir" ]; 
+then 
+    db_name="$(pwd)/files/personagens"
+fi
 
 #Executar Scritp do database
 echo -n "Deseja executar script de criação do banco de dados? (Y/N)"
@@ -83,17 +89,17 @@ then
     #executando o file watcher
     echo "Iniciando watcher de arquivos"
     cd watcher
-    gnome-terminal -x env API_PORT=$api_port node file_watcher
+    gnome-terminal -x env API_PORT=$api_port FILE_DIR=$file_dir node file_watcher
     cd ../
     sleep 1
-
+    
+    #serve para site
+    echo Iniciando server para o site
+    gnome-terminal -x node site/server.js
     #Abrindo browser para o site
     echo Abrindo browser para o site
-    xdg-mime default browser.desktop text/html
-    cd site
-    cd views
-    xdg-open index.html
-    cd ../../
+    xdg-open http://localhost:8080
+    
 elif [ "$enviroment" == "Darwin" ];
 then
     echo "MAC-Darwin"
@@ -109,8 +115,10 @@ then
     osascript -e "tell application \"Terminal\" to do script \"cd $pwd; cd watcher; env API_PORT=$api_port node file_watcher\"" > /dev/null
     sleep 1
     
-    #Abrindo browser com site
-    echo "Abrindo site"
-    #open site/views/index.html
-    open http://localhost:$api_port/api/personagens
+    echo Iniciando server para o site
+    node site/js/server.js
+    #Abrindo browser para o site
+    echo Abrindo browser para o site
+    open http://localhost:8080
+    #open http://localhost:$api_port/api/personagens
 fi
