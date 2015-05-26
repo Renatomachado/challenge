@@ -1,14 +1,15 @@
 #!/bin/bash
 #Inicia aplicação e instalação dos modulos necessários de cada aplicação
 
-echo -n "Porta da API: (3000)" 
+
+echo -n "Porta da API: (3000)" #site angular hardcoded porta 3000
 read api_port 
 if [ -z "$api_port" ]; 
 then 
     api_port=3000
 fi
 
-echo -n "Host do database: (localhost)" 
+echo -n "Host do database mysql: (localhost)" 
 read db_host 
 if [ -z "$db_host" ]; 
 then 
@@ -30,12 +31,12 @@ then
     db_pass=""
 fi
 
-echo -n "Nome Database: (challenge)" 
-read db_name 
-if [ -z "$db_name" ]; 
-then 
+#echo -n "Nome Database: (challenge)" 
+#read db_name 
+#if [ -z "$db_name" ]; 
+#then 
     db_name="challenge"
-fi
+#fi
 
 echo -n "Diretório dos arquivos .json: ($(pwd)/files/personagens)" 
 read file_dir 
@@ -73,10 +74,9 @@ bower install
 cd ../
 
 
-
 enviroment="$(uname -s)"
 
-if [ "$enviroment" == "Linux" ];
+if [ "$enviroment" == "Linux" ]; #Linux ubuntu/debian
 then
     echo "Linux"
     #executando a api em novo terminal
@@ -84,14 +84,14 @@ then
     cd server
     gnome-terminal -x env APP_PORT=$api_port DB_HOST=$db_host DB_USER=$db_user DB_PASSWORD=$db_pass DB_NANE=$db_name node api
     cd ../
-    sleep 1
+    sleep 2
 
     #executando o file watcher
     echo "Iniciando watcher de arquivos"
     cd watcher
     gnome-terminal -x env API_PORT=$api_port FILE_DIR=$file_dir node file_watcher
     cd ../
-    sleep 1
+    sleep 2
     
     #serve para site
     echo Iniciando server para o site
@@ -100,7 +100,7 @@ then
     echo Abrindo browser para o site
     xdg-open http://localhost:8080
     
-elif [ "$enviroment" == "Darwin" ];
+elif [ "$enviroment" == "Darwin" ]; #OSX
 then
     echo "MAC-Darwin"
     pwd="$(pwd)"
@@ -108,17 +108,16 @@ then
     #executando a api em novo terminal
     echo "Iniciando API"
     osascript -e "tell application \"Terminal\" to do script \"cd $pwd; cd server; env APP_PORT=$api_port DB_HOST=$db_host DB_USER=$db_user DB_PASSWORD=$db_pass DB_NANE=$db_name node api\"" > /dev/null
-    sleep 1
+    sleep 2
     
     #executando watcher em novo terminal
     echo "Iniciando watcher de arquivos"
     osascript -e "tell application \"Terminal\" to do script \"cd $pwd; cd watcher; env API_PORT=$api_port node file_watcher\"" > /dev/null
-    sleep 1
+    sleep 2
     
     echo Iniciando server para o site
-    node site/js/server.js
+    osascript -e "tell application \"Terminal\" to do script \"cd $pwd; cd site; node server.js\"" > /dev/null
     #Abrindo browser para o site
     echo Abrindo browser para o site
     open http://localhost:8080
-    #open http://localhost:$api_port/api/personagens
 fi

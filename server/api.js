@@ -13,7 +13,7 @@ var port = process.env.APP_PORT || 3000;
 
 var host = process.env.DB_HOST || 'localhost';
 var user = process.env.DB_USER || 'root';
-var password = process.env.DB_PASSWORD || 'root';
+var password = process.env.DB_PASSWORD || '';
 var database = process.env.DB_NAME || 'challenge';
 
 var connection = mysql.createConnection({
@@ -32,6 +32,7 @@ app.use(bodyParser.json());
 var router = express.Router();
 router.use(xmlparser());
 router.use(cors());
+
 //list personagens
 router.get('/personagens', function(req, res) {
     
@@ -156,7 +157,7 @@ router.post('/personagens', function(req, res) {
                         sql.selectOne('caracteristicas', {  
                             nome : caracteristica
                         }).then(function(caract){
-                            if(caract == undefined){
+                            if(caract === undefined){
                             
                                 sql.insert('caracteristicas', {
                                     nome : caracteristica
@@ -189,6 +190,8 @@ router.post('/personagens', function(req, res) {
                             }
                         });  
                     });
+                }else{
+                    callback();
                 }
             },
             function(callback){
@@ -205,6 +208,8 @@ router.post('/personagens', function(req, res) {
                             callback();
                         });
                     });            
+                }else{
+                    callback();
                 }
             },
             function(callback){
@@ -221,31 +226,41 @@ router.post('/personagens', function(req, res) {
                             callback();
                         });
                     });     
+                }else{
+                    callback();
                 }
             },
             function(callback){
-                sql.insert('relacionamentos', {
-                    personagem : personagem.nome[0],
-                    relacionado : personagem.pessoasrelacionadas[0].mae[0],
-                    tipo : 'mae'
-                }).then(function(){
+                if(personagem.pessoasrelacionadas[0].mae != undefined){
+                    sql.insert('relacionamentos', {
+                        personagem : personagem.nome[0],
+                        relacionado : personagem.pessoasrelacionadas[0].mae[0],
+                        tipo : 'mae'
+                    }).then(function(){
+                        callback();
+                    }).catch(function(){
+                       //catch error
+                        callback();
+                    });
+                }else{
                     callback();
-                }).catch(function(){
-                   //catch error
-                    callback();
-                });
+                }
             },
             function(callback){
-                sql.insert('relacionamentos', {
-                    personagem : personagem.nome[0],
-                    relacionado : personagem.pessoasrelacionadas[0].pai[0],
-                    tipo : 'pai'
-                }).then(function(){
+                if(personagem.pessoasrelacionadas[0].pai != undefined){
+                    sql.insert('relacionamentos', {
+                        personagem : personagem.nome[0],
+                        relacionado : personagem.pessoasrelacionadas[0].pai[0],
+                        tipo : 'pai'
+                    }).then(function(){
+                        callback();
+                    }).catch(function(){
+                       //catch error
+                        callback();
+                    });
+                }else{
                     callback();
-                }).catch(function(){
-                   //catch error
-                    callback();
-                });
+                }
             }
         ], function(){
             

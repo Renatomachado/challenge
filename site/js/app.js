@@ -1,5 +1,7 @@
-var Desafio = angular.module('Desafio', ['ui.router', 'ngResource']);
+var Desafio = angular.module('Desafio', ['ui.router', 'ngResource', 'ui.bootstrap']);
 
+    //TODO
+    //Automatizar a porta onde a api é aberta
     Desafio.constant('API', {
 		url: 'http://localhost:3000'
 	});

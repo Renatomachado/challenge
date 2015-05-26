@@ -29,7 +29,7 @@ function read_files(directory){
     
     fs.readdir(directory,function(err,files){
         if (err) throw err;
-        files.forEach(function(file){
+        async.forEach(files, function(file){
             read_single_file(dir + file);
         });
     });
