@@ -1,8 +1,61 @@
+<h2 class="page-header">
+    <small class="pull-right"><a ui-sref="home" class="btn btn-default">voltar</a></small>
+    Personagens
+</h2>
 
-<h2>Personagens</h2>
+<div ng-hide="loading">
+    <div class="container">
+        <div class="row">
+            <button class="btn btn-info" ng-click="collapse_fields = !collapse_fields">Campos</button>
+            <label class="pull-right" style="margin-right: 30px;">
+                <i class="fa fa-search fa-lg"></i>
+                <input type="text" ng-model="query" >
+<!--                <button class="btn btn-warning btn-sm" ng-click="collapse_filter = !collapse_filter">Avançado</button>-->
+            </label>
+        </div>
 
+        <div class="row bg-info">
+            <div collapse="collapse_fields">
+                <div class="col-md-2" ng-repeat="item in fields">
+                    <label>
+                        <input type="checkbox" ng-model="item.show">{{item.field | label}}
+                    </label>
+                </div>
 
+            </div>
+        </div>
+        
+        <div class="row bg-warning">
+            <div collapse="collapse_filter">
+                <div class="col-md-2" ng-repeat="item in fields">
+                    <label>
+                        <input type="checkbox" ng-model="item.show">{{item.field | label}}
+                    </label>
+                </div>
 
-<p ng-repeat="personagem in personagens">
-    {{personagem.nome}}
-</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div clas="row">
+        <hr>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th ng-if="item.show" ng-repeat="item in fields">{{item.field | label}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="personagem in personagens | filter : query">
+                    <td ng-if="item.show" ng-repeat="item in fields">{{personagem[item.field]}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <pagination total-items="total" ng-model="page" items-per-page="perPage" max-size="5" boundary-links="true" rotate="false" ng-change="get_personagens()" previous-text='«' next-text='»' first-text='Inicio' last-text='Fim'>
+    </pagination>
+</div>
+<div ng-show="loading">
+    <p>Carregando personagens <i class="fa fa-spinner fa-pulse"></i></p>
+</div>

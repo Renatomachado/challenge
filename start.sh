@@ -2,12 +2,12 @@
 #Inicia aplicação e instalação dos modulos necessários de cada aplicação
 
 
-echo -n "Porta da API: (3000)" #site angular hardcoded porta 3000
-read api_port 
-if [ -z "$api_port" ]; 
-then 
+#echo -n "Porta da API: (3000)" #site angular hardcoded porta 3000
+#read api_port 
+#if [ -z "$api_port" ]; 
+#then 
     api_port=3000
-fi
+#fi
 
 echo -n "Host do database mysql: (localhost)" 
 read db_host 
