@@ -10,7 +10,7 @@ var async = require('async');
 
 var port = process.env.APP_PORT || 3000;
 var host = process.env.DB_HOST || 'localhost';
-var db_port = proccess.env.DB_PORT || 3306;
+var db_port = process.env.DB_PORT || 3306;
 var user = process.env.DB_USER || 'root';
 var password = process.env.DB_PASSWORD || '';
 var database = process.env.DB_NAME || 'challenge';
