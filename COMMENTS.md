@@ -1,6 +1,7 @@
 # Solução do desafio
 
-Usei bastante javascript. 
+Usei bastante javascript.
+
 Node js para o serviço de monitorar e enviar arquivos.
 
 A API que recebe os arquivos foi feita, também em node js, com express.
