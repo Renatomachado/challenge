@@ -16,6 +16,14 @@ then
     db_host="localhost"
 fi
 
+echo -n "Porta do database mysql: (3306)" 
+read db_port 
+if [ -z "$db_port" ]; 
+then 
+    db_port=3306
+fi
+
+
 echo -n "usuário do database: (root)" 
 read db_user 
 if [ -z "$db_user" ]; 
@@ -48,9 +56,9 @@ fi
 #Executar Scritp do database
 echo -n "Deseja executar script de criação do banco de dados? (Y/N)"
 read answer
-if [ "$answer" == "Y" ];
+if [[ "$answer" == "Y" || "$answer" == "y" ]];
 then
-    mysql -u$db_user -p$db_pass -e "\. database/challenge.sql"
+    mysql -h$db_host --port$db_port -u$db_user -p$db_pass -e "\. database/challenge.sql"
 fi
 
 #instalar modulos node
@@ -80,7 +88,7 @@ then
     #executando a api em novo terminal
     echo "Iniciando API"
     cd server
-    gnome-terminal -x env APP_PORT=$api_port DB_HOST=$db_host DB_USER=$db_user DB_PASSWORD=$db_pass DB_NANE=$db_name node api
+    gnome-terminal -x env APP_PORT=$api_port DB_HOST=$db_host DB_PORT=$db_port DB_USER=$db_user DB_PASSWORD=$db_pass DB_NANE=$db_name node api
     cd ../
     sleep 2
 
@@ -100,7 +108,7 @@ then
     
     echo -n "Deseja executar os testes? (Y/N)"
     read answer1
-    if [ "$answer1" == "Y" ];
+    if [[ "$answer1" == "Y" || "$answer1" == "y" ]];
     then
         echo "Rodando testes do site, usando Karma e jasmine"
         gnome-terminal -x node_modules/karma/bin/karma start
@@ -127,7 +135,7 @@ then
 
     echo -n "Deseja executar os testes? (Y/N)"
     read answer1
-    if [ "$answer1" == "Y" ];
+    if [[ "$answer1" == "Y" || "$answer1" == "y" ]];
     then
         echo "Rodando testes do site, usando Karma e jasmine"
         osascript -e "tell application \"Terminal\" to do script \"cd $pwd; node_modules/karma/bin/karma start\"" > /dev/null
