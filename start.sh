@@ -58,7 +58,7 @@ echo -n "Deseja executar script de criação do banco de dados? (Y/N)"
 read answer
 if [[ "$answer" == "Y" || "$answer" == "y" ]];
 then
-    mysql -h$db_host --port$db_port -u$db_user -p$db_pass -e "\. database/challenge.sql"
+    mysql -h$db_host --port=$db_port -u$db_user -p$db_pass -e "\. database/challenge.sql"
 fi
 
 #instalar modulos node
