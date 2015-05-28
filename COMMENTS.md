@@ -32,7 +32,7 @@ Os testes do site são feitos com jasmine e executados com karma.
 Fiz um pequeno server em node js para acessar o site.
 
 Criei também um .sh para ser executado, que pede todas as definições para executar os sitemas, 
-incluindo os scripts do banco de dados. Único problema é que ele abre muitas janelas de terminal,
+incluindo os scripts do banco de dados. Único problema é que ele abre muitas janelas de terminal.
 
 
 
