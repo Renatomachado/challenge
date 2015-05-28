@@ -26,6 +26,13 @@
     "fs": "0.0.2",
     "js2xmlparser": "~0.1.9",
     "chokidar": "~1.0.1",
-    "cors": "~2.6.0"
+    "cors": "~2.6.0",
+    "karma": "~0.12.33",
+    "jasmine-core": "~2.3.4",
+    "karma-jasmine": "~0.3.5",
+    "karma-chrome-launcher": "~0.1.12",
+    "karma-jasmine-matchers": "^0.1.3",
+    "karma-nested-reporter": "^0.1.3",
+    "karma-clear-screen-reporter": "0.0.1"
   }
 }

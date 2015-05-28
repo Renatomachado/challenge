@@ -46,9 +46,8 @@ function read_single_file(file) {
             var obj = JSON.parse(json);
             if (obj instanceof Array) {
                 async.eachSeries(obj, function (item, callback) {
-                    if (_und.where(objects, {
-                            nome: item.nome
-                        }).length == 0) { //testa se objeto ja existe no array 
+                    if (_und.where(objects, {nome: item.nome }).length == 0) { //testa se objeto ja existe no array 
+
                         objects.push(item);
                         console.log(js2xmlparser("personagem", item));
 
@@ -59,9 +58,8 @@ function read_single_file(file) {
                     callback();
                 });
             } else {
-                if (_und.where(objects, {
-                        nome: obj.nome
-                    }).length == 0) { //testa se objeto ja existe no array 
+                if (_und.where(objects, {nome: obj.nome}).length == 0) { //testa se objeto ja existe no array 
+
                     objects.push(obj);
                     console.log(js2xmlparser("personagem", obj));
 

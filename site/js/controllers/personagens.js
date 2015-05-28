@@ -9,27 +9,35 @@ Desafio.controller('personagensController', function ($scope, Personagem) {
     $scope.loading = false;
     
     $scope.get_personagens = function(){
-        $scope.loading = true;
+        // $scope.loading = true;
         Personagem.get({
             page: $scope.page,
             perPage: $scope.perPage,
-        }).$promise.then(function (data) {
+        }).$promise.
+        then(function (data) {
 
             $scope.personagens = data.list;
             $scope.total = data.total;
 
             _.map($scope.personagens, function (item) {
-                item.mae = item.pessoasRelacionadas.mae;
-                item.pai = item.pessoasRelacionadas.pai;
-                item.caracteristicas = item.caracteristicas.join(', ');
-                item.amigos = item.pessoasRelacionadas.amigos.join(', ');
-                item.inimigos = item.pessoasRelacionadas.inimigos.join(', ');
+                if(item.pessoasRelacionadas){
+                    item.mae = item.pessoasRelacionadas.mae;
+                    item.pai = item.pessoasRelacionadas.pai;
+                    item.amigos = item.pessoasRelacionadas.amigos.join(', ');
+                    item.inimigos = item.pessoasRelacionadas.inimigos.join(', ');
+                }
+                
+                if(item.caracteristicas){
+                    item.caracteristicas = item.caracteristicas.join(', ');
+                }
                 return item;
             });
             
             if(data.list.length){
                 var fields = _.keys(data.list[0]);
-                fields.splice(fields.indexOf('pessoasRelacionadas'), 1);
+                if(fields.indexOf('pessoasRelacionadas') > -1){
+                    fields.splice(fields.indexOf('pessoasRelacionadas'), 1);
+                }
                 fields.forEach(function(item){
                     $scope.fields.push({
                         field : item,
@@ -40,6 +48,10 @@ Desafio.controller('personagensController', function ($scope, Personagem) {
             }
             
             $scope.loading = false;
+
+        }, function(err){
+
+            $scope.message = 'Ocorreu um erro ao tentar buscar os personagens';
 
         });
     };

@@ -58,12 +58,11 @@ echo "Instalando modulos para a API"
 npm install
 
 #instalar libs do site
-echo checando se BOWER está isntalado
+echo checando se BOWER está instalado
 if ! bower_command="$(type -p "bower")" || [ -z "$bower_command" ];
 then
   echo BOWER não está instalado
   echo instalando bower globalmente
-  # install bower here
   sudo npm install bower -g
 else
   echo BOWER já está instalado
@@ -72,7 +71,6 @@ echo "Instalando libs do site"
 cd site
 bower install
 cd ../
-
 
 enviroment="$(uname -s)"
 
@@ -100,6 +98,14 @@ then
     echo Abrindo browser para o site
     xdg-open http://localhost:8080
     
+    echo -n "Deseja executar os testes? (Y/N)"
+    read answer1
+    if [ "$answer1" == "Y" ];
+    then
+        echo "Rodando testes do site, usando Karma e jasmine"
+        gnome-terminal -x node_modules/karma/bin/karma start
+    fi
+
 elif [ "$enviroment" == "Darwin" ]; #OSX
 then
     echo "MAC-Darwin"
@@ -117,7 +123,18 @@ then
     
     echo Iniciando server para o site
     osascript -e "tell application \"Terminal\" to do script \"cd $pwd; cd site; node server.js\"" > /dev/null
+
+
+    echo -n "Deseja executar os testes? (Y/N)"
+    read answer1
+    if [ "$answer1" == "Y" ];
+    then
+        echo "Rodando testes do site, usando Karma e jasmine"
+        osascript -e "tell application \"Terminal\" to do script \"cd $pwd; node_modules/karma/bin/karma start\"" > /dev/null
+    fi
+
     #Abrindo browser para o site
     echo Abrindo browser para o site
     open http://localhost:8080
 fi
+
